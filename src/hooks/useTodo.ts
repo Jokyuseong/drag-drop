@@ -1,9 +1,10 @@
 import { ChangeEventHandler, useState } from "react";
-import { Section, Todo } from "../context/TodoContext";
+import { ISection } from "../context/TodoContext";
 
 export const useTodo = () => {
+  const [sectionValue, setSectionValue] = useState("");
   const [todoValue, setTodoValue] = useState("");
-  const [sections, setSections] = useState<Section[]>([
+  const [sections, setSections] = useState<ISection[]>([
     { title: "Section 1", todos: [] },
   ]);
 
@@ -11,22 +12,34 @@ export const useTodo = () => {
     setTodoValue(e.target.value);
   };
 
-  const resetTodoValue = () => {
-    setTodoValue("");
-  };
 
-  const addSection = (section: Section) => {
-    setSections([...sections, section]);
+  const addSection = () => {
+    setSections([...sections, {
+      title: sectionValue,
+      todos: []
+    }]);
+
+
+    setSectionValue('')
   };
 
   const removeSection = (sectionIndex: number) => {
     setSections(sections.filter((_, index) => index !== sectionIndex));
   };
 
-  const addTodo = (sectionIndex: number, todo: Todo) => {
+  const onChangeSectionValue:ChangeEventHandler<HTMLInputElement> = (e) => {
+    setSectionValue(e.target.value);
+  }
+
+
+  const addTodo = (sectionIndex: number = 0) => {
     const newSections = [...sections];
-    newSections[sectionIndex].todos.push(todo);
+    newSections[sectionIndex].todos.push({
+      id:Date.now(),
+      title: todoValue
+    });
     setSections(newSections);
+    setTodoValue("");
   };
 
   const removeTodo = (sectionIndex: number, todoIndex: number) => {
@@ -39,12 +52,13 @@ export const useTodo = () => {
 
   return {
     todoValue,
-    resetTodoValue,
     onChangeTodoValue,
     sections,
     addSection,
     removeSection,
     addTodo,
     removeTodo,
+    onChangeSectionValue,
+    sectionValue
   };
 };

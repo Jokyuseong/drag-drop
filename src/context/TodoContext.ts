@@ -10,7 +10,7 @@ export interface Todo {
   id: number;
 }
 
-export interface Section {
+export interface ISection {
   title: string;
   todos: Todo[];
 }

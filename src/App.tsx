@@ -1,34 +1,31 @@
-import { useState } from "react";
 import "./App.css";
-import { Board, Button, Input, Section, TodoItem } from "./components";
-import { TodoContext } from "./context/TodoContext";
+import {Button, Input, Section} from "./components";
+import {TodoContext} from "./context/TodoContext";
 import { useTodo } from "./hooks/useTodo";
 
 function App() {
   const todo = useTodo();
 
-  const onClickAddTodo = () => {
-    todo.addTodo(0, { title: todo.todoValue, id: Date.now() });
-    todo.resetTodoValue();
-  };
-
-  const onClickSection = () => {};
-
   return (
     <TodoContext.Provider value={todo}>
-      <Section />
-      {todo.sections.map((section) => (
-        <ol key={section.title}>
-          {section.title}
-          {section.todos.map((todo) => (
-            <li key={todo.id}>{todo.title}</li>
+        <div style={{display: 'flex', gap: 30}}>
+          {todo.sections.map((section, index) => (
+              <Section key={index} section={section} />
           ))}
-        </ol>
-      ))}
-      <Input onChange={todo.onChangeTodoValue} />
-      <Button onClick={onClickAddTodo}>투두추가</Button>
+        </div>
+      <Input value={todo.sectionValue} onChange={todo.onChangeSectionValue} />
+      <Button onClick={todo.addSection}>섹션추가</Button>
+      <Input value={todo.todoValue} onChange={todo.onChangeTodoValue} />
+      <Button onClick={() => todo.addTodo()}>투두추가</Button>
     </TodoContext.Provider>
   );
 }
 
 export default App;
+
+
+/**
+ * TODO
+ * - 드래그 이벤트 정리
+ * - 섹션, 투두 삭제
+ */
