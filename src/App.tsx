@@ -1,6 +1,6 @@
 import "./App.css";
-import {Button, Input, Section} from "./components";
-import {TodoContext} from "./context/TodoContext";
+import { Button, Input, Section } from "./components";
+import { TodoContext } from "./context/TodoContext";
 import { useTodo } from "./hooks/useTodo";
 
 function App() {
@@ -8,11 +8,11 @@ function App() {
 
   return (
     <TodoContext.Provider value={todo}>
-        <div style={{display: 'flex', gap: 30}}>
-          {todo.sections.map((section, index) => (
-              <Section key={index} section={section} />
-          ))}
-        </div>
+      <div style={{ display: "flex", gap: 30 }}>
+        {todo.sections.map((section, index) => (
+          <Section key={index} section={section} />
+        ))}
+      </div>
       <Input value={todo.sectionValue} onChange={todo.onChangeSectionValue} />
       <Button onClick={todo.addSection}>섹션추가</Button>
       <Input value={todo.todoValue} onChange={todo.onChangeTodoValue} />
@@ -23,9 +23,7 @@ function App() {
 
 export default App;
 
-
 /**
  * TODO
  * - 드래그 이벤트 정리
- * - 섹션, 투두 삭제
  */

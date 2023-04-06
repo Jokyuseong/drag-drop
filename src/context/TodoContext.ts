@@ -13,4 +13,5 @@ export interface Todo {
 export interface ISection {
   title: string;
   todos: Todo[];
+  id: number;
 }

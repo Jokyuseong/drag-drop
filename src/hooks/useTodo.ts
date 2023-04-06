@@ -5,47 +5,57 @@ export const useTodo = () => {
   const [sectionValue, setSectionValue] = useState("");
   const [todoValue, setTodoValue] = useState("");
   const [sections, setSections] = useState<ISection[]>([
-    { title: "Section 1", todos: [] },
+    { title: "Section 1", todos: [], id: Date.now() },
   ]);
 
   const onChangeTodoValue: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTodoValue(e.target.value);
   };
 
-
   const addSection = () => {
-    setSections([...sections, {
-      title: sectionValue,
-      todos: []
-    }]);
+    setSections([
+      ...sections,
+      {
+        title: sectionValue,
+        todos: [],
+        id: Date.now(),
+      },
+    ]);
 
-
-    setSectionValue('')
+    setSectionValue("");
   };
 
-  const removeSection = (sectionIndex: number) => {
-    setSections(sections.filter((_, index) => index !== sectionIndex));
+  const removeSection = (sectionId: number) => {
+    setSections(sections.filter(({ id }) => id !== sectionId));
   };
 
-  const onChangeSectionValue:ChangeEventHandler<HTMLInputElement> = (e) => {
+  const onChangeSectionValue: ChangeEventHandler<HTMLInputElement> = (e) => {
     setSectionValue(e.target.value);
-  }
+  };
 
-
-  const addTodo = (sectionIndex: number = 0) => {
-    const newSections = [...sections];
-    newSections[sectionIndex].todos.push({
-      id:Date.now(),
-      title: todoValue
+  const addTodo = (sectionId: number = 0) => {
+    const newSections = sections.map((section) => ({
+      ...section,
+      todos: [...section.todos],
+    }));
+    newSections[sectionId].todos.push({
+      id: Date.now(),
+      title: todoValue,
     });
     setSections(newSections);
     setTodoValue("");
   };
 
-  const removeTodo = (sectionIndex: number, todoIndex: number) => {
-    const newSections = [...sections];
+  const removeTodo = (sectionId: number, todoId: number) => {
+    const newSections = sections.map((section) => ({
+      ...section,
+      todos: [...section.todos],
+    }));
+    const sectionIndex = newSections.findIndex(
+      (section) => section.id === sectionId
+    );
     newSections[sectionIndex].todos = newSections[sectionIndex].todos.filter(
-      (_, index) => index !== todoIndex
+      ({ id }) => id !== todoId
     );
     setSections(newSections);
   };
@@ -59,6 +69,6 @@ export const useTodo = () => {
     addTodo,
     removeTodo,
     onChangeSectionValue,
-    sectionValue
+    sectionValue,
   };
 };

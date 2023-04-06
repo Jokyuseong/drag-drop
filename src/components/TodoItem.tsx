@@ -1,20 +1,36 @@
-import {Todo} from "../context/TodoContext";
-import {DragEventHandler} from "react";
+import { Todo, TodoContext } from "../context/TodoContext";
+import { DragEventHandler, useContext } from "react";
+import { Button } from "./Button";
 
-export const TodoItem = ({todo}: {todo: Todo}) => {
-  const onDragStart:DragEventHandler<HTMLLIElement> = (e) => {
-    console.log(e)
-  }
+export const TodoItem = ({
+  todo,
+  sectionId,
+}: {
+  todo: Todo;
+  sectionId: number;
+}) => {
+  const { removeTodo } = useContext(TodoContext);
+  const onDragStart: DragEventHandler<HTMLDivElement> = (e) => {
+    console.log(e);
+  };
 
-  const onDragEnter:DragEventHandler<HTMLLIElement> = (e) => {
-    console.log(e)
+  const onDragEnter: DragEventHandler<HTMLDivElement> = (e) => {
+    console.log(e);
+  };
 
-  }
+  const onDragEnd: DragEventHandler<HTMLDivElement> = (e) => {
+    console.log(e);
+  };
 
-  const onDragEnd:DragEventHandler<HTMLLIElement> = (e) => {
-    console.log(e)
-
-  }
-
-  return <li onDragStart={onDragStart} onDragEnter={onDragEnter} onDragEnd={onDragEnd} draggable>{todo.title}</li>;
+  return (
+    <div
+      onDragStart={onDragStart}
+      onDragEnter={onDragEnter}
+      onDragEnd={onDragEnd}
+      draggable
+    >
+      <p>{todo.title}</p>
+      <Button onClick={() => removeTodo?.(sectionId, todo.id)}>삭제</Button>
+    </div>
+  );
 };
