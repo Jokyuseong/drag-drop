@@ -26,6 +26,16 @@ export const useTodo = () => {
       selectedSectionIndex
     ].todos.findIndex((todo) => todo.id === currentDragStartedTodoItem?.id);
 
+    let dragStartTodoItemIndex2 = null;
+    sections.forEach((section) => {
+      const index = section.todos.findIndex(
+        (todo) => todo.id === currentDragStartedTodoItem?.id
+      );
+      if (index > -1) dragStartTodoItemIndex2 = index;
+    });
+
+    console.log("dragStartTodoItemIndex", dragStartTodoItemIndex2);
+
     setTodoValue(currentDragStartedTodoItem ? currentDragStartedTodoItem : "");
     addTodo(selectedSectionIndex);
     removeTodo(selectedSectionIndex, dragStartTodoItemIndex);
